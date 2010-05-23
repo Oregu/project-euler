@@ -1,9 +1,7 @@
 #!/usr/bin/env ruby
 
-# Незакончено, работает неправильно, должен генерировать размещения.
-
 class Combination
-		
+
 	def generate list, by = nil
 
 		len = list.length
@@ -40,7 +38,17 @@ class Combination
 
 		comb
 	end
-	
+
+	def each_pair coll
+		len = coll.size
+		pairs = []
+		0.upto(len-1) do |i|
+			(i).upto(len-1) do |j|
+				yield [coll[i], coll[j]]
+			end
+		end
+	end
+
 end
 
 def time
@@ -52,8 +60,9 @@ end
 if __FILE__ == $0
 
 	c = Combination.new
-	print c.generate [2, 2, 3, 5, 5], 4
-	print (c.generate [2, 2, 3, 5, 5]).collect {|x| x.inject(1) {|res, item| res*item }}.uniq
+#	print c.generate [2, 2, 3, 5, 5], 2
+	print c.pairs [2, 3, 4, 5, 6]
+#	print (c.generate [2, 2, 3, 5, 5]).collect {|x| x.inject(1) {|res, item| res*item }}.uniq
 	puts "\nDone"
 
 end
