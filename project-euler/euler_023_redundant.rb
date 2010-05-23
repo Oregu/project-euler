@@ -22,39 +22,39 @@ require "set"
 
 class AbundantSum
 
-	MAX_AB = 28123
+  MAX_AB = 28123
 
-	def initialize
-		@primes = Prime.new
-		@primes.load_primes_upto MAX_AB
-		@field = (2..MAX_AB).to_a
-		@field = @field - @primes.primes_table
-		@primes.load_primes_upto Math.sqrt(MAX_AB).floor
-	end
+  def initialize
+    @primes = Prime.new
+    @primes.load_primes_upto MAX_AB
+    @field = (2..MAX_AB).to_a
+    @field = @field - @primes.primes_table
+    @primes.load_primes_upto Math.sqrt(MAX_AB).floor
+  end
 
-	def solve
-		abun = []
-		@field.each do |n|
-			s = 0
-			(@primes.get_proper_divisors n).each do |x|
-				s += x if x != n
-				if s > n
-					abun << n
-					break
-				end
-			end
-		end
+  def solve
+    abun = []
+    @field.each do |n|
+      s = 0
+      (@primes.get_proper_divisors n).each do |x|
+        s += x if x != n
+        if s > n
+          abun << n
+          break
+        end
+      end
+    end
 
-		sums = Set.new
-		c = Combination.new		
-		c.each_pair abun do |pair|
-			s = pair[0] + pair[1]
-			sums << s if s < MAX_AB
-		end
+    sums = Set.new
+    c = Combination.new		
+    c.each_pair abun do |pair|
+      s = pair[0] + pair[1]
+      sums << s if s < MAX_AB
+    end
 		
-		all = Set.new (24..(MAX_AB-1)).to_a
-		(all - sums).inject {|x,acc| x+acc }
-	end
+    all = Set.new (24..(MAX_AB-1)).to_a
+    (all - sums).inject {|x,acc| x+acc }
+  end
 
 end
 
@@ -65,11 +65,11 @@ def time
 end
 
 if __FILE__ == $0
+  
+  cl = AbundantSum.new
+  ans = 0
+  t_solve = time { ans = cl.solve }
 
-	cl = AbundantSum.new
-	ans = 0
-	t_solve = time { ans = cl.solve }
-
-	puts "Sum is: #{ans}"
-	puts "Solve time is #{t_solve}"
+  puts "Sum is: #{ans}"
+  puts "Solve time is #{t_solve}"
 end
