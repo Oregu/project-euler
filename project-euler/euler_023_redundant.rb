@@ -33,27 +33,25 @@ class AbundantSum
   end
 
   def solve
+
     abun = []
     @field.each do |n|
       s = 0
       (@primes.get_proper_divisors n).each do |x|
         s += x if x != n
-        if s > n
-          abun << n
-          break
-        end
+        (abun << n and break) if s > n
       end
     end
 
     sums = Set.new
-    c = Combination.new		
-    c.each_pair abun do |pair|
-      s = pair[0] + pair[1]
-      sums << s if s < MAX_AB
-    end
-		
-    all = Set.new (24..(MAX_AB-1)).to_a
-    (all - sums).inject {|x,acc| x+acc }
+	0.upto(abun.size-1) do |i|
+	  i.upto(abun.size-1) do |j|
+		sums << abun[i] + abun[j]
+	  end
+	end
+
+    all = Set.new((1..(MAX_AB-1)).to_a)
+	(all - sums).inject {|x,acc| x+acc }
   end
 
 end
@@ -65,11 +63,12 @@ def time
 end
 
 if __FILE__ == $0
-  
-  cl = AbundantSum.new
+
+  cl = nil
+  t_init = time { cl = AbundantSum.new }
   ans = 0
   t_solve = time { ans = cl.solve }
 
   puts "Sum is: #{ans}"
-  puts "Solve time is #{t_solve}"
+  puts "Solve time is #{t_solve}; Init time is #{t_init}"
 end

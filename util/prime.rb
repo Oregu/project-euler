@@ -9,7 +9,8 @@ class Prime
 	end
 
 	def load_primes_upto to
-		@primes_table = eratosthenes_sieve to
+    @upto = to
+		@primes_table = eratosthenes_sieve @upto
 	end
 
 	def each
@@ -18,7 +19,7 @@ class Prime
 		end
 	end
 
-	def flush minOne = 2, maxOne
+	def flush minOne, maxOne
 		primes = get_prime_list maxOne
 		
 		File.open 'primes.pr', 'w' do |prime_file|
@@ -129,18 +130,18 @@ class Prime
 		
 	def Prime.is_prime num
 
-        return false if num <= 1
-        return false if (num%2).zero?
+    return false if num <= 1
+    return false if (num%2).zero?
 		return false if (num%3).zero?
-        
+    
 		del = 5
-        while del*del <= num do
-            return false if (num%del).zero?
-            del += 2
-        end
-        
-        true
+    while del*del <= num do
+      return false if (num%del).zero?
+      del += 2
     end
+        
+    true
+  end
 
 	def get_proper_divisors num # Still can be improved
 
@@ -179,6 +180,28 @@ class Prime
 		end
 	end
 
+  def index pr
+    raise if @primes_table.empty? || pr > @upto
+
+    low = 0
+    high = @primes_table.length - 1
+    
+    while low <= high
+      mid = (low + high) >> 1
+      midVal = @primes_table[mid]
+      
+      if midVal < pr
+        low = mid + 1
+      elsif midVal > pr
+        high = mid - 1
+      else
+        return mid
+      end
+    end
+
+    nil
+  end
+
 end
 
 def time
@@ -190,6 +213,10 @@ end
 if __FILE__ == $0
 
 	p = Prime.new
+  p.load_primes_upto 1000000
+  
+  puts p.index 971
+
 #	maxprime = 1000000
 
 #	s1 = 0
@@ -205,7 +232,7 @@ if __FILE__ == $0
 #		Eratosthenes Sieve: #{takes1} \n\t\
 #		By finding divisors: #{takes2}"
 
-	puts p.get_prime_divisors 1036
+#	puts p.get_prime_divisors 1036
 
 #	puts p.get_prime_list 1009
 #	s.flush 1, 10**5
