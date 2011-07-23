@@ -64,11 +64,10 @@ end
 
 if __FILE__ == $0
 
-  cl = nil
-  t_init = time { cl = AbundantSum.new }
+  cl = AbundantSum.new
   ans = 0
   t_solve = time { ans = cl.solve }
 
   puts "Sum is: #{ans}"
-  puts "Solve time is #{t_solve}; Init time is #{t_init}"
+  puts "Solve time: #{t_solve}"
 end
