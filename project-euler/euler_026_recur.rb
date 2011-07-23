@@ -33,23 +33,23 @@ class RecurCycle
 	  num -= q*b
 	end
 
+	qs = []
 	float_p = []
 	until num.zero? do
 	  num *= 10
 	  float_p << 0 and next if num < b
 	  q = num.div b
-	  ind = float_p.index(q) ######### WRONG ##########
+	  ind = qs.index(num) ######### WRONG ##########
 	  break unless ind.nil?
+	  qs << num
 	  float_p << q
 	  num -= q*b
-	  break if float_p.size > 25
+	  break if float_p.size > 1000
 	end
 
 	recr_p = float_p[ind, float_p.size] unless ind.nil?
 
-	[int_p.inject(0)   {|acc, a| acc*10 + a },
-	 float_p.inject(0) {|acc, a| acc*10 + a },
-	 recr_p && recr_p.inject(0)  {|acc, a| acc*10 + a }]
+	[recr_p ? "0" : int_p.to_s, float_p.to_s.sub(/0$/, ''), recr_p && recr_p.to_s.sub(/0$/, '')]
   end
 
 end
@@ -63,7 +63,7 @@ end
 if __FILE__ == $0
 
   rc = RecurCycle.new
-#  i, f, r = rc.div_by(1, 3)
-#  puts "#{i},#{f}(#{r})"
+#  i, f, r = rc.div_by(1, 27)
+#  puts "#{i},#{f} (#{r})"
   puts rc.solve(999), "has max cycle"
 end
