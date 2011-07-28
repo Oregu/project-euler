@@ -18,6 +18,11 @@
  as well as 100000 abcdef >> a^4 + b^4 + c^4 + d^4 + e^5 + f^5 >> 5*9^4 = 32805
 -}
 
+{-
+  And here is Haskell one liner from the forum
+  sum [x | x <- [2..1000000], x == (sum . map ((^5) . digitToInt) . show) x]
+-}
+
 import Data.Char (digitToInt)
 
 main = putStrLn $ show ans ++ "\nsum = " ++ (show $ sum ans)
