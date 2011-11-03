@@ -8,7 +8,7 @@ import Char (intToDigit)
 
 main = print solve
 
-solve = sum $ filter isDoublePalindromic [1..999999]
+solve = sum $ filter isDoublePalindromic [1, 3..999999]
 
 isDoublePalindromic n = isPalindrome n && isBinPalindrome n
 
