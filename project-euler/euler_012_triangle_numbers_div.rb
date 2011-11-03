@@ -18,7 +18,7 @@
 # What is the value of the first triangle number to have over
 # five hundred divisors?
 
-require "../Util/prime"
+require "../util/prime"
 
 class TriangleNumberDividersSolver
 	
@@ -38,7 +38,7 @@ class TriangleNumberDividersSolver
 
 		prime_divs = @p.get_prime_divisors number
 		n = count_with_prime_divs prime_divs
-		puts "For #{number} by prime divs is #{n}"
+		#puts "For #{number} by prime divs is #{n}"
 
 		n
 	end
