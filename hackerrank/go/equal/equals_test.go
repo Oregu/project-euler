@@ -21,6 +21,16 @@ func TestSearchEqualAlgo(t *testing.T) {
 	sort.Ints(chocolates)
 	rounds := searchEqualAlgo(chocolates)
 	if rounds != 10605 {
-	    t.Error("Expected 10605, got ", rounds)
+		t.Error("Expected 10605, got ", rounds)
+	}
+}
+
+func TestSearchEqualAlgoTricky(t *testing.T) {
+	chocolates := []int{1, 5, 5}
+
+	sort.Ints(chocolates)
+	rounds := searchEqualAlgo(chocolates)
+	if rounds != 3 {
+		t.Error("Expected 3, got ", rounds)
 	}
 }

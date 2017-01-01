@@ -37,31 +37,20 @@ func main() {
 func searchEqualAlgo(chocolates []int) int {
 	// Give to everybody except second smallest, until smallest will match.
 	// Continue until biggest.
+	rounds := 0
+	runningSum := 0
 
-	for level := 0; level < 100000000; level++ { 
-		smallest := chocolates[0]
-		secondSmallest := smallest
-		secondSmallestIntern := 1
-		for i := 1; i < len(chocolates); i++ {
-			if chocolates[i] != smallest {
-				secondSmallest = chocolates[i]
-				secondSmallestIntern = i
-				break
-			}
-		}
-
-		// Finished!
-		if secondSmallest == smallest {
-			return level
-		}
+	for i := 0; i < len(chocolates)-1; i++ { 
+		smallest := chocolates[i]
+		chocolates[i+1] += runningSum
+		secondSmallest := chocolates[i+1]
 
 		difference := secondSmallest - smallest
-		level += splitRounds(difference)
-
-		nextRound(chocolates, secondSmallestIntern, difference)
+		runningSum += difference
+		rounds += splitRounds(difference)
 	}
 
-	return 0
+	return rounds
 }
 
 func splitRounds(difference int) int {
@@ -69,13 +58,5 @@ func splitRounds(difference int) int {
 	fivesLeftover := difference % 5
 	twos := fivesLeftover >> 1
 	twosLeftOver := fivesLeftover % 2
-	return fives + twos + twosLeftOver - 1
-}
-
-func nextRound(chocolates []int, intern int, chocoNum int) {
-	for i := 0; i < len(chocolates); i++ {
-		if i != intern {
-			chocolates[i] += chocoNum
-		}
-	}
+	return fives + twos + twosLeftOver
 }
