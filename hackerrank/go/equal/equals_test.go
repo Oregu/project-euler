@@ -25,12 +25,42 @@ func TestSearchEqualAlgo(t *testing.T) {
 	}
 }
 
+func TestSearchEqualAlgoRepeat(t *testing.T) {
+	chocolates := []int{5, 5, 7}
+	rounds := searchEqualAlgo(chocolates)
+	if rounds != 1 {
+		t.Error("Expected 1, got ", rounds)
+	}
+}
+
+func TestSearchEqualAlgoSame(t *testing.T) {
+	chocolates := []int{5, 5, 5}
+	rounds := searchEqualAlgo(chocolates)
+	if rounds != 0 {
+		t.Error("Expected 0, got ", rounds)
+	}
+}
+
 func TestSearchEqualAlgoTricky(t *testing.T) {
 	chocolates := []int{1, 5, 5}
-
-	sort.Ints(chocolates)
 	rounds := searchEqualAlgo(chocolates)
 	if rounds != 3 {
 		t.Error("Expected 3, got ", rounds)
+	}
+}
+
+func TestSearchEqualAlgoTricky2(t *testing.T) {
+	chocolates := []int{2, 5, 5, 5, 5, 5}
+	rounds := searchEqualAlgo(chocolates)
+	if rounds != 6 {
+		t.Error("Expected 6, got ", rounds)
+	}
+}
+
+func TestSearchEqualAlgoTricky3(t *testing.T) {
+	chocolates := []int{1, 5, 5, 10, 10}
+	rounds := searchEqualAlgo(chocolates)
+	if rounds != 7 {
+		t.Error("Expected 7, got ", rounds)
 	}
 }
