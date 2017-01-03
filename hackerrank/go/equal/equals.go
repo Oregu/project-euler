@@ -41,21 +41,8 @@ func searchEqualAlgo(chocolates []int) int {
 	runningSum := 0
 
 	for i := 0; i < len(chocolates)-1; i++ { 
-		smallest := chocolates[i]
 		chocolates[i+1] += runningSum
-		secondSmallest := chocolates[i+1]
-
-		if smallest == secondSmallest {
-			continue
-		}
-
-		difference := secondSmallest - smallest
-		if (chocolates[i+1] % 5 == 0) && (i+1 != len(chocolates)-1) && restDivideBy5(chocolates, i+2) {
-			difference += 5 - (difference%5)
-			chocolates[i] -= runningSum
-			chocolates[i], chocolates[i+1] = chocolates[i+1], chocolates[i]
-			i--
-		}
+		difference := chocolates[i+1] - chocolates[i]
 		runningSum += difference
 		rounds += splitRounds(difference)
 	}
@@ -69,13 +56,4 @@ func splitRounds(difference int) int {
 	twos := fivesLeftover >> 1
 	twosLeftOver := fivesLeftover % 2
 	return fives + twos + twosLeftOver
-}
-
-func restDivideBy5(chocolates []int, fromInd int) bool {
-	for i := fromInd; i < len(chocolates); i++ {
-		if chocolates[i] % 5 != 0 {
-			return false
-		}
-	}
-	return true
 }
