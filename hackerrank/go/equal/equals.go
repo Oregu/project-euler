@@ -38,8 +38,10 @@ func searchEqualAlgo(chocolates []int) int {
 	// Give to everybody except second smallest, until smallest will match.
 	// Continue until biggest.
 	rounds := 0
+	differenceSum := 0
 	for i := 0; i < len(chocolates)-1; i++ { 
-		rounds += splitRounds(chocolates[i+1] - chocolates[i])
+		differenceSum += chocolates[i+1] - chocolates[i]
+		rounds += splitRounds(differenceSum)
 	}
 	return rounds
 }
