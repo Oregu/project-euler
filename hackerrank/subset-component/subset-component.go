@@ -13,7 +13,7 @@ func main() {
 
 	var N int
 	fmt.Fscanf(reader, "%d\n", &N)
-	numbers := make([]int, N)
+	numbers := make([]uint64, N)
 	for i := 0; i < N; i++ {
 		fmt.Fscanf(reader, "%d", &numbers[i])
 	}
@@ -22,32 +22,54 @@ func main() {
 	fmt.Println(compons)
 }
 
-func countSubsetComponents(numbers []int) int {
-	totalComponents := 0
+func countSubsetComponents(numbers []uint64) uint64 {
+	totalComponents := uint64(0)
 	for _, subset := range subsets(numbers) {
-		fmt.Println(subset)
+		var components, bits, totalBitsCount uint64 = 0, 0, 0
+		for i := 0; i < len(subset); i++ {
+			if subset[i] == 0 { continue }
+			prevBitsCount := totalBitsCount
+			bits |= subset[i]
+			subsetBitsCount := countBits(subset[i])
+			totalBitsCount = countBits(bits)
+			if totalBitsCount == prevBitsCount + subsetBitsCount {
+				// If some bits would collide, that would mean some components intersected.
+				components++
+			}
+		}
+		totalComponents += uint64(64) - totalBitsCount + components
 	}
 	return totalComponents
 }
 
-func subsets(numbers []int) [][]int {
-	subsetSize := 2 << uint64(len(numbers)-1)
-	subsets := make([][]int, subsetSize)
-	for i := 0; i < subsetSize; i++ {
-		subsets[i] = make([]int, 0, 20)
-		bitWalking(i, func(bitIndex int) {
-			subsets[i] = append(subsets[i], numbers[bitIndex])
-		})
+func subsets(numbers []uint64) [][]uint64 {
+	var subsetSize uint64 = 2 << uint64(len(numbers)-1)
+	subsets := make([][]uint64, subsetSize)
+	for i := uint64(0); i < subsetSize; i++ {
+		subsets[i] = subset(numbers, i)
 	}
 	return subsets
 }
 
-func bitWalking(bits int, process func(int)) {
-	i := 0
+func countBits(bits uint64) uint64 {
+	var bitsCount, i uint64 = 0, 0
 	for bits > 0 {
 		if bits & 1 == 1 {
-			process(i)
+			bitsCount++
 		}
 		bits >>= 1; i++
 	}
+	return bitsCount
+}
+
+func subset(numbers []uint64, bits uint64) []uint64 {
+	subset := make([]uint64, 0, 20)
+	i := uint64(0)
+	for bits > 0 {
+		if bits & 1 == 1 {
+			subset = append(subset, numbers[i])
+		}
+		bits >>= 1; i++
+	}
+	return subset
 }
