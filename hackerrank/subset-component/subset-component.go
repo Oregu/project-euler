@@ -34,19 +34,20 @@ func subsets(numbers []int) [][]int {
 	subsetSize := 2 << uint64(len(numbers)-1)
 	subsets := make([][]int, subsetSize)
 	for i := 0; i < subsetSize; i++ {
-		subsets[i] = subset(numbers, i)
+		subsets[i] = make([]int, 0, 20)
+		bitWalking(i, func(bitIndex int) {
+			subsets[i] = append(subsets[i], numbers[bitIndex])
+		})
 	}
 	return subsets
 }
 
-func subset(numbers []int, bits int) []int {
-	subset := make([]int, 0, 20)
+func bitWalking(bits int, process func(int)) {
 	i := 0
 	for bits > 0 {
 		if bits & 1 == 1 {
-			subset = append(subset, numbers[i])
+			process(i)
 		}
 		bits >>= 1; i++
 	}
-	return subset
 }
