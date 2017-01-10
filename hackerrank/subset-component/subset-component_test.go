@@ -7,6 +7,6 @@ func TestSubsetComponent(t *testing.T) {
 
 	compons := countSubsetComponents(numbers)
 	if compons != 504 {
-		t.Error("Expected 504, got ", swaps)
+		t.Error("Expected 504, got ", compons)
 	}
 }
